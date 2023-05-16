@@ -1,7 +1,14 @@
-import { LitElement, css, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { LitElement, css, html, nothing } from 'lit'
+import { customElement, property, state } from 'lit/decorators.js'
 import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
+
+interface Vote {
+  Id: number;
+  Created: string;
+  DeviceName: string;
+  Vote: string;
+}
 
 /**
  * An example element.
@@ -17,11 +24,7 @@ export class MyElement extends LitElement {
   @property()
   docsHint = 'Click on the Vite and Lit logos to learn more'
 
-  /**
-   * The number of times the button has been clicked.
-   */
-  @property({ type: Number })
-  count = 0
+  @state() vote?: Vote;
 
   render() {
     return html`
@@ -35,16 +38,31 @@ export class MyElement extends LitElement {
       </div>
       <slot></slot>
       <div class="card">
-        <button @click=${this._onClick} part="button">
-          count is ${this.count}
+        <button @click=${this.handleLoadVotes} part="button">
+          Load votes
         </button>
+      </div>
+      <div class="votes">
+        ${this.renderVote()}
       </div>
       <p class="read-the-docs">${this.docsHint}</p>
     `
   }
+  renderVote(): unknown {
+    if (!this.vote) return nothing;
+    return html`
+      <div><span>Id: </span><span>${this.vote.Id}</span></div>
+      <div><span>Created: </span><span>${this.vote.Created}</span></div>
+      <div><span>Device: </span><span>${this.vote.DeviceName}</span></div>
+      <div><span>Vote: </span><span>${this.vote.Vote}</span></div>
+    `;
+  }
 
-  private _onClick() {
-    this.count++
+  private async handleLoadVotes() {
+    const response = await fetch('/votes');
+    const text = await response.text();
+    console.log(`${Date.now() % 100000} asdf vote text ${text}`);
+    this.vote = JSON.parse(text) as Vote;
   }
 
   static styles = css`
