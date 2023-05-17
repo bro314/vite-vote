@@ -1,3 +1,5 @@
+# Vite Vote
+
 ## D1 Commands
 
 ```
