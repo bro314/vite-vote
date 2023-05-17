@@ -1,5 +1,7 @@
 # Vite Vote
 
+This is a voting web app.
+
 ## D1 Commands
 
 ```
