@@ -1,0 +1,8 @@
+name = "voting"
+main = "src/index.ts"
+compatibility_date = "2023-05-14"
+
+[[ d1_databases ]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "votes"
+database_id = "46216ae3-792a-40b4-b477-b645e86164c6"
